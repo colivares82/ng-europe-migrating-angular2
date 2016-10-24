@@ -7,7 +7,8 @@ Migrating Angular 2 -  NG-Europe 2016 (Paris) - 24/oct/2016
 
 There was given a main branch (Master) and then after the explanation the intention was to move all the code to Angular 2 with ng-upgrade (Downgrade and Upgrade)
 
-The result is in the branch "solution-after-workshop"
+My result is in the branch "solution-after-workshop"
+The trainer result is in the branch "manfred-solution"
 
 <h1>This are the steps:</h1>
 _________________________________

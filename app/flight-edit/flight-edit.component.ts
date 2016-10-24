@@ -2,15 +2,25 @@ import * as angular from 'angular';
 import {FlightService} from '../services/flight.service';
 import {Flight} from "../shared/flight";
 
-class FlightEditController {
+import { Component, Input, OnInit, Inject } from '@angular/core';
+
+@Component({
+    selector: 'flight-edit',
+    templateUrl: './flight-edit.component.html'
+})
+export class FlightEditComponent implements OnInit {
     info = 'Flight Edit';
-    id: string;
+
+    @Input() id: string;
+
     flight: Flight = <any>{};
     message: string;
 
-    constructor($stateParams: any, private flightService: FlightService) {
-        this.id = $stateParams.id;
+    constructor(
+        @Inject('flightService') private flightService: FlightService) {
+    }
 
+    ngOnInit() {
         this.flightService
             .getById(this.id)
             .then((flight: Flight) => {
@@ -21,6 +31,7 @@ class FlightEditController {
                 console.error(resp);
                 this.message = resp.data;
             })
+
     }
 
     save() {
@@ -36,9 +47,4 @@ class FlightEditController {
                 this.message = resp.data;
             })
     }
-}
-
-export let FlightEditComponent: angular.IComponentOptions = {
-    controller: FlightEditController,
-    template: require('./flight-edit.component.html')
 }

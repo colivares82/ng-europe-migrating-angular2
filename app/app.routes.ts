@@ -18,9 +18,7 @@ angular
         })
         .state('flightBooking.flightSearch', {
             url: '/flight',
-            controller: 'FlightSearchController',
-            controllerAs: '$ctrl',
-            templateUrl: './flight-search/flight-search.html'
+            template: '<flight-search></flight-search>'
         })
         .state('flightBooking.passengerSearch', {
             url: '/passenger',
@@ -28,8 +26,16 @@ angular
         })
         .state('flightBooking.flightEdit', {
             url: '/flight/:id',
-            template: '<flight-edit></flight-edit>'
+            template: '<flight-edit [id]="$ctrl.id"></flight-edit>',
+            resolve: {
+                id: $stateParams => $stateParams.id
+            },
+            controller: function(id) {
+                this.id = id;
+            },
+            controllerAs: '$ctrl'
         });
+
 });
 
 

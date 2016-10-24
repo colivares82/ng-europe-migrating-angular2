@@ -1,3 +1,4 @@
-﻿require("./app.module");
-require("./flight-search/flight-search");
-require("./app.routes");
+﻿import {upgradeAdapter} from './app.module';
+import './app.routes';
+
+upgradeAdapter.bootstrap(document.body, ['flight-app']);

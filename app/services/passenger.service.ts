@@ -1,19 +1,28 @@
 import {Passenger} from '../shared/passenger';
+import {Injectable} from '@angular/core';
+import {Http, URLSearchParams, Headers} from '@angular/http';
 
+@Injectable()
 export class PassengerService {
 
     constructor(
-        private $http: ng.IHttpService) {
+        private http: Http) {
     }
 
     find(name): Promise<Passenger[]> {
-        var url = 'http://www.angular.at/api/passenger';
+        let url = 'http://www.angular.at/api/passenger';
 
-        var urlParams = { name: name };
+        // let urlParams = { name: name };
+        let search = new URLSearchParams();
+        search.set('name', name);
+
+        let headers = new Headers();
+        headers.set('Accept', 'text/json');
 
         return this
-                .$http
-                .get(url, { params: urlParams })
-                .then(resp => resp.data);
+                .http
+                .get(url, { search: search, headers: headers })
+                .map(resp => resp.json())
+                .toPromise();
     }
 }

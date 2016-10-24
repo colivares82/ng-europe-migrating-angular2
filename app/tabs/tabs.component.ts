@@ -1,64 +1,58 @@
 import * as angular from 'angular';
 
-class TabsController {
+import { Component, AfterContentInit, OnInit, Input} from '@angular/core';
 
-    private tabs: Array<TabController> = [];
+@Component({
+    selector: 'tabs',
+    template: `
+        <div style="background-color:lightblue; padding:20px;">
+            <span *ngFor="let tab of tabs" style="padding-right:20px;">
+                <a style="cursor:pointer" (click)="activate(tab)">{{tab.title}}</a>
+            </span>
 
-    public register(tab: TabController) {
+            <ng-content></ng-content>
+        </div>
+
+    `
+})
+export class TabsComponent implements AfterContentInit {
+
+    private tabs: Array<TabComponent> = [];
+
+    public register(tab: TabComponent) {
         this.tabs.push(tab);
     }
 
-    public activate(active: TabController) {
+    public activate(active: TabComponent) {
         for(let tab of this.tabs) {
             tab.visible = (tab == active);
         }
     }
 
-    $postLink() {
+    ngAfterContentInit() {
         if (this.tabs.length == 0) return;
         this.activate(this.tabs[0]);
     }
 
 }
 
-export var tabsComponentDesc: angular.IComponentOptions = {
-    controller: TabsController,
-    transclude: true,
+@Component({
+    selector: 'tab',
     template: `
-
-        <div style="background-color:lightblue; padding:20px;">
-            <span ng-repeat="tab in $ctrl.tabs" style="padding-right:20px;">
-                <a style="cursor:pointer" ng-click="$ctrl.activate(tab)">{{tab.title}}</a>
-            </span>
-
-            <ng-transclude></ng-transclude>
+        <div *ngIf="visible">
+            <h2>{{title}}</h2>
+            <ng-content></ng-content>
         </div>
     `
-}
-
-class TabController {
+})
+export class TabComponent implements OnInit {
     public visible: boolean = false;
-    public title: string;
-    public tabs: TabsController;
+    @Input() public title: string;
 
-    $onInit() {
+    constructor(public tabs: TabsComponent) {
+    }
+
+    ngOnInit() {
         this.tabs.register(this);
     }
-}
-
-export var tabComponentDesc: angular.IComponentOptions = {
-    controller: TabController,
-    require: {
-        tabs: '^tabs'
-    },
-    bindings: {
-        title: '@'
-    },
-    transclude: true,
-    template: `
-        <div ng-if="$ctrl.visible">
-            <h2>{{$ctrl.title}}</h2>
-            <ng-transclude></ng-transclude>
-        </div>
-    `
 }

@@ -1,0 +1,27 @@
+<h1>Flight Search (Migrated)</h1>
+
+<div class="form-group">
+    <label>From</label>
+    <input class="form-control" [(ngModel)]="from" />
+</div>
+
+<div class="form-group">
+    <label>To</label>
+    <input class="form-control" [(ngModel)]="to" />
+</div>
+
+<div class="form-group">
+    <button class="btn btn-default" (click)="search()">Search</button>
+</div>
+
+<div *ngFor="let f of flights" class="col-sm-6 col-md-4">
+
+    <flight-card [item]="f"
+                 [(selectedItem)]="selectedFlight"></flight-card>
+
+</div>
+
+<pre>Shopping Basket
+------------------------
+{{ selectedFlight | json }}
+</pre>
